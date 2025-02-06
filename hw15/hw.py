@@ -4,10 +4,13 @@ Create a Pizza class that could have ingredients added to it. Raise an error if 
 """
 class Pizza:
     def __init__(self):
-        pass
-    
+        self.ingredients = []
+
     def add_ingredient(self, ingredient):
-        pass
+        if ingredient in self.ingredients:
+            raise ValueError(f"{ingredient} already added!")
+        self.ingredients.append(ingredient)
+
 
 
 """
@@ -16,16 +19,19 @@ Create an Elevator class with methods to go up, go down, and get the current flo
 """
 class Elevator:
     def __init__(self):
-        pass
+        self.current_floor = 0
 
     def go_up(self):
-        pass
+        self.current_floor += 1
 
     def go_down(self):
-        pass
+        if self.current_floor > 0:
+            self.current_floor -= 1
+        else:
+            raise ValueError("Cannot go below ground floor (0)")
 
     def get_current_floor(self):
-        pass
+        return self.current_floor
 
 
 """
@@ -34,16 +40,18 @@ Create a class Stack with methods to push, pop, and check if the stack is empty.
 """
 class Stack:
     def __init__(self):
-        pass
+        self.stack = []
 
     def push(self, item):
-        pass
+        self.stack.append(item)
 
     def pop(self):
-        pass
+        if self.is_empty():
+            raise IndexError("pop from empty stack")
+        return self.stack.pop()
 
     def is_empty(self):
-        pass
+        return len(self.stack) == 0
 
 
 """
@@ -52,16 +60,24 @@ Design a BankAccount class with methods to deposit, withdraw, and check balance.
 """
 class BankAccount:
     def __init__(self, initial_balance):
-        pass
+        if initial_balance < 0:
+            raise ValueError("Initial balance cannot be negative")
+        self.balance = initial_balance
 
     def deposit(self, amount):
-        pass
+        if amount < 0:
+            raise ValueError("Deposit amount cannot be negative")
+        self.balance += amount
 
     def withdraw(self, amount):
-        pass
+        if amount < 0:
+            raise ValueError("Withdrawal amount cannot be negative")
+        if amount > self.balance:
+            raise ValueError("Insufficient funds")
+        self.balance -= amount
 
     def check_balance(self):
-        pass
+        return self.balance
 
 
 """
@@ -70,10 +86,14 @@ Create a class Person with attributes for name and age. Implement a method birth
 """
 class Person:
     def __init__(self, name, age):
-        pass
+        if age < 0:
+            raise ValueError("Age cannot be negative")
+        self.name = name
+        self.age = age
 
     def birthday(self):
-        pass
+        self.age += 1
+
 
 
 """
@@ -82,15 +102,15 @@ Create an Animal base class and a Dog and Cat derived classes. Each animal shoul
 """
 class Animal:
     def sound(self):
-        pass
+        raise NotImplementedError("Subclass must implement abstract method")
 
 class Dog(Animal):
     def sound(self):
-        pass
+        return "Woof!"
 
 class Cat(Animal):
     def sound(self):
-        pass
+        return "Meow!"
 
 
 """
@@ -100,20 +120,21 @@ Design a class Calculator with static methods for addition, subtraction, multipl
 class Calculator:
     @staticmethod
     def add(x, y):
-        pass
+        return x + y
 
     @staticmethod
     def subtract(x, y):
-        pass
+        return x - y
 
     @staticmethod
     def multiply(x, y):
-        pass
+        return x * y
 
     @staticmethod
     def divide(x, y):
-        pass
-
+        if y == 0:
+            raise ZeroDivisionError("Cannot divide by zero")
+        return x / y
 
 """
 Exercise 8:
@@ -121,8 +142,10 @@ Create a class `Car` with attributes for speed and mileage. Raise a ValueError i
 """
 class Car:
     def __init__(self, speed, mileage):
-        pass
-
+        if speed < 0 or mileage < 0:
+            raise ValueError("Speed and mileage cannot be negative")
+        self.speed = speed
+        self.mileage = mileage
 
 """
 Exercise 9:
@@ -130,18 +153,18 @@ Create a Student class and a Course class. Each Course can enroll students and p
 """
 class Student:
     def __init__(self, name):
-        pass
+        self.name = name
 
 class Course:
     def __init__(self):
-        pass
+        self.students = []
 
     def enroll(self, student):
-        pass
+        self.students.append(student)
 
     def print_students(self):
-        pass
-
+        for student in self.students:
+            print(student.name)
 
 """
 Exercise 10:
@@ -149,17 +172,18 @@ Create a Flight class with a destination, departure time, and a list of passenge
 """
 class Flight:
     def __init__(self, destination, departure):
-        pass
+        self.destination = destination
+        self.departure = departure
+        self.passengers = []
 
     def add_passenger(self, passenger):
-        pass
+        self.passengers.append(passenger)
 
     def change_destination(self, new_destination):
-        pass
+        self.destination = new_destination
 
     def delay(self, delay_time):
-        pass
-
+        self.departure += delay_time
 
 """
 Exercise 11:
@@ -167,18 +191,21 @@ Create a Library class with a list of Book objects. The Book class should have a
 """
 class Book:
     def __init__(self, title, author):
-        pass
+        self.title = title
+        self.author = author
 
 class Library:
     def __init__(self):
-        pass
+        self.books = []
 
     def add_book(self, book):
-        pass
+        self.books.append(book)
 
     def find_by_title(self, title):
-        pass
-
+        for book in self.books:
+            if book.title == title:
+                return book
+        return None
 
 """
 Exercise 12:
@@ -186,17 +213,25 @@ Design a class Matrix that represents a 2D matrix with methods for addition, sub
 """
 class Matrix:
     def __init__(self, matrix):
-        pass
+        self.matrix = matrix
 
     def add(self, other):
-        pass
+        if len(self.matrix) != len(other.matrix) or len(self.matrix[0]) != len(other.matrix[0]):
+            raise ValueError("Matrices must have the same dimensions")
+        result = [[self.matrix[i][j] + other.matrix[i][j] for j in range(len(self.matrix[0]))] for i in range(len(self.matrix))]
+        return result
 
     def subtract(self, other):
-        pass
+        if len(self.matrix) != len(other.matrix) or len(self.matrix[0]) != len(other.matrix[0]):
+            raise ValueError("Matrices must have the same dimensions")
+        result = [[self.matrix[i][j] - other.matrix[i][j] for j in range(len(self.matrix[0]))] for i in range(len(self.matrix))]
+        return result
 
     def multiply(self, other):
-        pass
-
+        if len(self.matrix[0]) != len(other.matrix):
+            raise ValueError("Matrices cannot be multiplied")
+        result = [[sum(self.matrix[i][k] * other.matrix[k][j] for k in range(len(self.matrix[0]))) for j in range(len(other.matrix[0]))] for i in range(len(self.matrix))]
+        return result
 
 """
 Exercise 13:
@@ -204,31 +239,35 @@ Create a class Rectangle with attributes for height and width. Implement methods
 """
 class Rectangle:
     def __init__(self, height, width):
-        pass
+        self.height = height
+        self.width = width
 
     def area(self):
-        pass
+        return self.height * self.width
 
     def perimeter(self):
-        pass
+        return 2 * (self.height + self.width)
 
     def is_square(self):
-        pass
-
+        return self.height == self.width
 
 """
 Exercise 14:
 Design a class Circle with attributes for radius. Implement methods for calculating the area and the circumference of the circle. Handle exceptions for negative radius values.
 """
+import math
+
 class Circle:
     def __init__(self, radius):
-        pass
+        if radius < 0:
+            raise ValueError("Radius cannot be negative")
+        self.radius = radius
 
     def area(self):
-        pass
+        return math.pi * (self.radius ** 2)
 
     def circumference(self):
-        pass
+        return 2 * math.pi * self.radius
 
 
 """
@@ -237,14 +276,18 @@ Design a class Triangle with methods to calculate the area and perimeter. Implem
 """
 class Triangle:
     def __init__(self, side_a, side_b, side_c):
-        pass
+        if side_a + side_b <= side_c or side_a + side_c <= side_b or side_b + side_c <= side_a:
+            raise ValueError("The sides do not form a valid triangle")
+        self.side_a = side_a
+        self.side_b = side_b
+        self.side_c = side_c
 
     def area(self):
-        pass
+        s = (self.side_a + self.side_b + self.side_c) / 2
+        return (s * (s - self.side_a) * (s - self.side_b) * (s - self.side_c)) ** 0.5
 
     def perimeter(self):
-        pass
-
+        return self.side_a + self.side_b + self.side_c
 
 """
 Exercise 16:
@@ -259,36 +302,65 @@ class AbstractShape:
 
 class Circle(AbstractShape):
     def __init__(self, radius):
-        pass
+        self.radius = radius
+
+    def area(self):
+        return math.pi * self.radius ** 2
+
+    def perimeter(self):
+        return 2 * math.pi * self.radius
 
 class Rectangle(AbstractShape):
     def __init__(self, height, width):
-        pass
+        self.height = height
+        self.width = width
+
+    def area(self):
+        return self.height * self.width
+
+    def perimeter(self):
+        return 2 * (self.height + self.width)
 
 class Triangle(AbstractShape):
     def __init__(self, side_a, side_b, side_c):
-        pass
+        if side_a + side_b <= side_c or side_a + side_c <= side_b or side_b + side_c <= side_a:
+            raise ValueError("Invalid triangle sides")
+        self.side_a = side_a
+        self.side_b = side_b
+        self.side_c = side_c
+
+    def area(self):
+        s = (self.side_a + self.side_b + self.side_c) / 2
+        return (s * (s - self.side_a) * (s - self.side_b) * (s - self.side_c)) ** 0.5
+
+    def perimeter(self):
+        return self.side_a + self.side_b + self.side_c
 
 """
 Exercise 17:
 Create a MusicPlayer class that contains a list of songs and methods to add songs, play a song, and skip to the next song. Also implement a method to shuffle the playlist.
 """
+import random
+
 class MusicPlayer:
     def __init__(self):
-        pass
+        self.songs = []
+        self.current_song_index = 0
 
     def add_song(self, song):
-        pass
+        self.songs.append(song)
 
     def play_song(self):
-        pass
+        if self.songs:
+            return self.songs[self.current_song_index]
+        return "No songs to play"
 
     def next_song(self):
-        pass
+        self.current_song_index = (self.current_song_index + 1) % len(self.songs)
+        return self.songs[self.current_song_index]
 
     def shuffle(self):
-        pass
-
+        random.shuffle(self.songs)
 
 """
 Exercise 18:
@@ -296,17 +368,20 @@ Design a Product class for an online store with attributes for name, price, and 
 """
 class Product:
     def __init__(self, name, price, quantity):
-        pass
+        self.name = name
+        self.price = price
+        self.quantity = quantity
 
     def add_stock(self, quantity):
-        pass
+        self.quantity += quantity
 
     def sell(self, quantity):
-        pass
+        if quantity > self.quantity:
+            raise ValueError("Not enough stock")
+        self.quantity -= quantity
 
     def check_stock(self):
-        pass
-
+        return self.quantity
 
 """
 Exercise 19:
@@ -314,17 +389,18 @@ Create a VideoGame class with attributes for title, genre, and rating. Implement
 """
 class VideoGame:
     def __init__(self, title, genre, rating):
-        pass
+        self.title = title
+        self.genre = genre
+        self.rating = rating
 
     def change_rating(self, rating):
-        pass
+        self.rating = rating
 
     def change_genre(self, genre):
-        pass
+        self.genre = genre
 
     def display_details(self):
-        pass
-
+        return f"Title: {self.title}, Genre: {self.genre}, Rating: {self.rating}"
 
 """
 Exercise 20:
@@ -332,44 +408,55 @@ Create a School class with a list of Teacher and Student objects. Teacher and St
 """
 class Person:
     def __init__(self, name, age):
-        pass
+        self.name = name
+        self.age = age
 
 class Teacher(Person):
     pass
 
 class Student(Person):
-    pass
+    def __init__(self, name, age):
+        super().__init__(name, age)
 
 class School:
     def __init__(self):
-        pass
+        self.teachers = []
+        self.students = []
 
     def add_teacher(self, teacher):
-        pass
+        self.teachers.append(teacher)
 
     def add_student(self, student):
-        pass
+        self.students.append(student)
 
     def print_all(self):
-        pass
+        for person in self.teachers + self.students:
+            print(f"{person.name}, Age: {person.age}")
+
 
 """
 Exercise 21:
 Design a Card class to represent a playing card with suit and rank. Then design a Deck class that uses the Card class. The Deck class should have methods to shuffle the deck, deal a card, and check the number of remaining cards.
 """
+import random
+
 class Card:
     def __init__(self, suit, rank):
-        pass
+        self.suit = suit
+        self.rank = rank
 
 class Deck:
     def __init__(self):
-        pass
+        suits = ["Hearts", "Diamonds", "Clubs", "Spades"]
+        ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]
+        self.cards = [Card(suit, rank) for suit in suits for rank in ranks]
+        random.shuffle(self.cards)
 
     def shuffle(self):
-        pass
+        random.shuffle(self.cards)
 
     def deal(self):
-        pass
+        return self.cards.pop() if self.cards else None
 
     def count(self):
-        pass
+        return len(self.cards)
