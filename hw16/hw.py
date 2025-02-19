@@ -1,6 +1,5 @@
 from typing import List, Optional
-
-
+g
 # Static Array
 class StaticArray:
     def __init__(self, capacity: int):
