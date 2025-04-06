@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Search Cars</h2>
+    <form method="get" action="/cars/search">
+        <input type="text" name="car_name" placeholder="Enter name" value="{{ search_query }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <ul>
+        {% for car in cars %}
+            <li>{{ car.name }} ({{ car.year }})</li>
+        {% else %}
+            <li>No cars found</li>
+        {% endfor %}
+    </ul>
+
+    <a href="/cars/new">Add Car</a>
+</body>
+</html>
