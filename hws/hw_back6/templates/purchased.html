@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Purchased Flowers</title>
+    <link rel="stylesheet" href="/hws/hw_back6/static/styles.css">
+
+</head>
+<body>
+    <h1>Your Purchased Flowers</h1>
+    {% if purchased_flowers %}
+        <ul>
+        {% for purchase in purchased_flowers %}
+            <li>
+                Flower: {{ purchase.flower.name }} | Price: {{ purchase.price }}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have not purchased any flowers yet.</p>
+    {% endif %}
+</body>
+</html>

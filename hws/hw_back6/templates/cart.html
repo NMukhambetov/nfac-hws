@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Carts Page</title>
+  <link rel = "stylesheet" href="/hws/hw_back6/static/styles.css">
+</head>
+<body>
+<h1>Your Cart</h1>
+
+{% if flowers %}
+    <ul>
+    {% for flower in flowers %}
+        <li>
+            <strong>{{ flower.flower_name }}</strong><br>
+            Quantity: {{ flower.number }}<br>
+            Price per flower: ${{ flower.price }}<br>
+            Total: ${{ flower.price * flower.number }}
+        </li>
+    {% endfor %}
+    </ul>
+    <h2>Total: ${{ total }}</h2>
+{% else %}
+    <p>Your cart is empty.</p>
+{% endif %}
+</body>
+</html>
+
